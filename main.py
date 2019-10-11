@@ -22,11 +22,11 @@ def passOne(text):
                 line.remove(i)
         if len(line)==2:
             pass
-            '''Check for second element in the list if its a variable add to symbol table
+            '''Check for line(1) in the list if its a variable add to symbol table
                 isUsed = true:
             '''
         elif len(line)==3:
-            '''Check two if's either it has : or it has DW in line(1) either way program counter will add to symbol
+            '''Check two if's either it has ':' or it has DW in line(1) either way program counter will add to symbol
                 isFound = true   
                 variableAddress = programCounter
             '''
