@@ -8,8 +8,7 @@ text = text.split('\n')
 
 
 symbol_Table={}
-
-
+symbolX = {'name':null, 'isUsed':False,'isFound':True, 'variableAdress':0}
 def passOne(text):
     for i in text:
         if i=='':
