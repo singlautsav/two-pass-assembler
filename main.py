@@ -5,20 +5,23 @@ except NameError:
     print("No File Found, Kindly Retry")
 text = file.read()
 text = text.split('\n')
-
+lines = []
 
 symbol_Table={}
-symbolX = {'name':null, 'isUsed':False,'isFound':True, 'variableAdress':0}
+
 def passOne(text):
+    symbolX = {'name':null, 'isUsed':False,'isFound':True, 'variableAdress':0}
     for i in text:
         if i=='':
             text.remove(i)
     programCOunter = 0
     for line in text:
+        
         line = text.split(' ')
         for i in line:
             if i=='':
                 line.remove(i)
+        lines.append(line)
         if len(line)==2:
             pass
             '''Check for line(1) in the list if its a variable add to symbol table
@@ -33,8 +36,5 @@ def passOne(text):
             '''check Stp command'''
 
         programCounter+=1
-
-
-
-
-
+def passTwo():
+    pass
