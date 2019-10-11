@@ -6,11 +6,15 @@ except NameError:
 text = file.read()
 text = text.split('\n')
 
-def assembly(text):
+
+symbol_Table={}
+
+
+def passOne(text):
     for i in text:
         if i=='':
             text.remove(i)
-    
+    programCOunter = 0
     for line in text:
         line = text.split(' ')
         for i in line:
@@ -23,11 +27,13 @@ def assembly(text):
             '''
         elif len(line)==3:
             '''Check two if's either it has : or it has DW in line(1) either way program counter will add to symbol
-                isFound = true:    
+                isFound = true   
+                variableAddress = programCounter
             '''
         elif len(line)==1:
             '''check Stp command'''
-        
+
+        programCounter+=1
 
 
 
