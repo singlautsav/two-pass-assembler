@@ -12,7 +12,7 @@ print(text)
 
 def checkSymbolLabel(lineX,programCounter):
     if lineX[0][-1]==':':
-        print("hello We are here :P found a label")
+        # print("hello We are here :P found a label")
         label_name = lineX[0][:len(lineX[0])-1]
         print(label_name)
         for i in symbol_Table:
@@ -20,15 +20,10 @@ def checkSymbolLabel(lineX,programCounter):
                 if i['isFound'] == False:
                     i['isFound'] = True
                     i['variableAddress'] = programCounter
-                else:
-                    return False
-
-
-
+    # if lineX[1]=='STP':
 
 def passOne(text):
-    
-    STP_found = False
+    STP_found = 0
     symbolX = {'name': '', 'isUsed': False, 'isFound': False, 'variableAddress': 0}
     for i in text:
         if i == '':
@@ -41,26 +36,45 @@ def passOne(text):
             if i == '':
                 line.remove(i)
         lines.append(line)
-        print(line)
+        # print(line)
         if len(line) == 2:
             # pass
             '''Check for line[1] in the list if its a variable add to symbol table'''
             for i in symbol_Table:
-                print(str(i))
+                # print(str(i))
                 if line[1] == i['name']:
                     # print("Flag changed")
                     flag = False
-            print('flag: '+ str(flag))
+            # print('flag: '+ str(flag))
             if flag:
                 symbol_Table.append({'name': line[1], 'isUsed': True, 'isFound': False, 'variableAddress': 0})
-            else:
-                print("Check Symbol")
-                checkSymbolLabel(line,programCounter)
+            if line[0][-1]==':':
+                # print("hello We are here :P found a label")
+                label_name = line[0][:len(line[0])-1]
+                # print(label_name)
+                for i in symbol_Table:
+                    if i['name'] == label_name:
+                        if i['isFound'] == False:
+                            i['isFound'] = True
+                            i['variableAddress'] = programCounter
+                if line[1]=='STP':
+                    STP_found=1
 
         elif len(line) == 3:
             '''Check two if's either it has ':' or it has DW in line(1) either way program counter will add to symbol'''
-            
-            if line[1] == 'DW':
+            if line[0][-1]==':':
+                # print("hello We are here :P found a label")
+                label_name = line[0][:len(line[0])-1]
+                # print(label_name)
+                for i in symbol_Table:
+                    if i['name'] == label_name:
+                        if i['isFound'] == False:
+                            i['isFound'] = True
+                            i['variableAddress'] = programCounter
+                if line[1]=='STP':
+                    STP_found=1
+
+            elif line[1] == 'DW':
                 label_name = line[1]
                 for i in symbol_Table:
                     if i['name'] == label_name:
@@ -71,52 +85,46 @@ def passOne(text):
                             print('error - label already found')
                     else:
                         print('error - undefined label')
-            elif checkSymbolLabel(line,programCounter)==False:
-                '''Error Symbol already defined'''
-                print("already Defined Error")
             # is   Found = True
             # variableAddress = programCounter
-
         elif len(line) == 1:
             '''check Stp command'''
-            if line[0] != 'CLA' or line[0] != 'STP':
-                print('error - not the instruction command')
+            # print(line[0])
+            if line[0] == 'CLA':
+                pass
             elif line[0] == 'STP':
                 STP_found = 1
+            else:
+                print("Error")
 
         '''DOUBT - how to know we are at end of file'''
         '''also include STP not found error'''
         #     if the program reaches at end and don't got 'STP' then error
-        if STP_found != 1:
-            print('STP not found in program')
-
-
-        #now iteration on the symbol table
-
         programCounter += 1
 
-
+    return STP_found
 
 def passTwo():
     pass
 
+ErrorFlag = False
 
+if passOne(text)==0:
+    ErrorFlag = True
+    print("Stop not Found")
+else:
+    variableAddress_counter = 0
+    for i in symbol_Table:
+        if i['isFound'] == False or i['isUsed'] == False:
+            ErrorFlag = True
+            print('error - they must be true')
+        elif i['variableAddress'] == 0:
+            if variableAddress_counter == 0:
+                variableAddress_counter += 1
+                i[3] = programCounter
+            elif variableAddress_counter >= 1:
+                ErrorFlag = True
+                print('error - more than one symbol with variableAddress missing')
 
-passOne(text)
-
-variableAddress_counter = 0
-for i in symbol_Table:
-    if i['isFound'] == False or i['isUsed'] == False:
-        print('error - they must be true')
-    elif i['variableAddress'] == 0:
-        if variableAddress_counter == 0:
-            variableAddress_counter += 1
-            i[3] = programCounter
-        elif variableAddress_counter >= 1:
-            print('error - more than one symbol with variableAddress missing')
-
-
-print(symbol_Table)
-
-
-
+if ErrorFlag!=False:
+    print(symbol_Table)
