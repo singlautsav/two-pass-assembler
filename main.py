@@ -8,6 +8,24 @@ text = text.split('\n')
 lines = []
 symbol_Table=[]
 print(text)
+
+
+def checkSymbolLabel(lineX,programCounter):
+    if lineX[0][-1]==':':
+        print("hello We are here :P found a label")
+        label_name = lineX[0][:len(lineX[0])-1]
+        print(label_name)
+        for i in symbol_Table:
+            if i['name'] == label_name:
+                if i['isFound'] == False:
+                    i['isFound'] = True
+                    i['variableAddress'] = programCounter
+                else:
+                    return False
+
+
+
+
 def passOne(text):
     
     STP_found = False
@@ -32,44 +50,31 @@ def passOne(text):
                 if line[1] == i['name']:
                     # print("Flag changed")
                     flag = False
-                # print('flag: '+ str(flag))
+            print('flag: '+ str(flag))
             if flag:
                 symbol_Table.append({'name': line[1], 'isUsed': True, 'isFound': False, 'variableAddress': 0})
-
+            else:
+                print("Check Symbol")
+                checkSymbolLabel(line,programCounter)
 
         elif len(line) == 3:
             '''Check two if's either it has ':' or it has DW in line(1) either way program counter will add to symbol'''
-            if line[0][-1] == ':':
-                # its a label
-                print("hello We are here :P found a label")
-                label = {}
-                label_name = line[0][:len(line[0])-1]
-                print(label_name)
-                for i in symbol_Table:
-                    if i['name'] == label_name:
-                        label = i
-                        if i['isFound'] == False:
-                            i['isFound'] = True
-                            i['variableAddress'] = programCounter
-                        else:
-                            print('error - label already found')
-                    
-
-            # isfound
-            elif line[1] == 'DW':
-                # label = {}
+            
+            if line[1] == 'DW':
                 label_name = line[1]
                 for i in symbol_Table:
                     if i['name'] == label_name:
                         if i['isFound'] == False:
                             i['isFound'] = True
-                            i['variableAddress'] = line[2]
+                            i['variableAddress'] = programCounter
                         else:
                             print('error - label already found')
                     else:
                         print('error - undefined label')
-
-            # isFound = True
+            elif checkSymbolLabel(line,programCounter)==False:
+                '''Error Symbol already defined'''
+                print("already Defined Error")
+            # is   Found = True
             # variableAddress = programCounter
 
         elif len(line) == 1:
