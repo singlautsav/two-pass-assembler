@@ -62,6 +62,7 @@ def passOne(text):
 
         elif len(line) == 3:
             '''Check two if's either it has ':' or it has DW in line(1) either way program counter will add to symbol'''
+            # print(line)
             if line[0][-1]==':':
                 # print("hello We are here :P found a label")
                 label_name = line[0][:len(line[0])-1]
@@ -73,9 +74,9 @@ def passOne(text):
                             i['variableAddress'] = programCounter
                 if line[1]=='STP':
                     STP_found=1
-
             elif line[1] == 'DW':
-                label_name = line[1]
+                label_name = line[0]
+                # print(label_name)
                 for i in symbol_Table:
                     if i['name'] == label_name:
                         if i['isFound'] == False:
@@ -83,8 +84,8 @@ def passOne(text):
                             i['variableAddress'] = programCounter
                         else:
                             print('error - label already found')
-                    else:
-                        print('error - undefined label')
+                    # else:
+                    #     print('error - undefined label')
             # is   Found = True
             # variableAddress = programCounter
         elif len(line) == 1:
@@ -126,5 +127,4 @@ else:
                 ErrorFlag = True
                 print('error - more than one symbol with variableAddress missing')
 
-if ErrorFlag!=False:
-    print(symbol_Table)
+print(symbol_Table)
