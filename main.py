@@ -7,7 +7,7 @@ text = file.read()
 text = text.split('\n')
 lines = []
 
-symbol_Table={}
+symbol_Table=[]
 
 def passOne(text):
     symbolX = {'name':null, 'isUsed':False,'isFound':True, 'variableAdress':0}
@@ -36,5 +36,7 @@ def passOne(text):
             '''check Stp command'''
 
         programCounter+=1
+
+
 def passTwo():
     pass
