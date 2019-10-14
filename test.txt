@@ -12,4 +12,4 @@ CLA
 BRZ L2
 A DW 2
 B DW 3
-L2: STP
+L2: 
