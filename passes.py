@@ -178,7 +178,7 @@ def convertbin(line,value):
     if value == 1:        # convert the binary value to 12 bit
         alen = len(line)
         b = ''
-        c = 12 - alen
+        c = 8 - alen
         for i in range(c):
             b += str(0)
         b += line
