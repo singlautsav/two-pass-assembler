@@ -138,20 +138,40 @@ finalOutput = []            # list to display the final output
 
 def checkSTP_CLA(line, lineY):
         if line[0] == 'CLA':        # check CLA
-            lineY += bin(programCounterP2)[2:] + " "    # convert programCounter to binary and add to the line
-            lineY += bin(opCode_Table['CLA'])[2:]       # convert opCode_Table 'CLA' into binary as machine code conatins the oppcode
+            lineY += convertbin(str(bin(programCounterP2)[2:]),1) + " "    # convert programCounter to binary and add to the line
+            lineY += convertbin(str(bin(opCode_Table['CLA'])[2:]),2)       # convert opCode_Table 'CLA' into binary as machine code conatins the oppcode
             return False, lineY
         elif line[0] == 'STP':
-            lineY += bin(programCounterP2)[2:] + " "  # convert programCounter to binary and add to the line
-            lineY += bin(opCode_Table['STP'])[2:]    # convert opCode_Table 'CLA' into binary as machine code conatins the oppcode
+            lineY += convertbin(str(bin(programCounterP2)[2:]),1) + " "  # convert programCounter to binary and add to the line
+            lineY += convertbin(str(bin(opCode_Table['STP'])[2:]),2)    # convert opCode_Table 'CLA' into binary as machine code conatins the oppcode
             return False, lineY
         return True, lineY
-    
+
+def convertbin(line,value):
+    if value == 1:        # convert the binary value to 12 bit
+        alen = len(line)
+        b = ''
+        c = 12 - alen
+        for i in range(c):
+            b += str(0)
+        b += line
+        line = b
+        return line
+    elif value == 2 :      # convert binary value to 4 bit
+        alen = len(line)
+        b = ''
+        c = 4 - alen
+        for i in range(c):
+            b += str(0)
+        b += line
+        line = b
+        return line
+
 def checkTwo(line, lineX):
         if line[0] == 'CLA' or line[0] == 'STP':    # check whether CLA and STP are present else error
             lineX = ''
             ErrorFlagPass2 = True
-            ErrorListPass2.append("Inavalid opCode with extra Argument at: " + bin(programCounterP2)[2:])
+            ErrorListPass2.append("Inavalid opCode with extra Argument at: " + convertbin(str(bin(programCounterP2)[2:])),1)
         else:
             if line[0][-1] == ':':
                 # print("checking this")
@@ -160,18 +180,18 @@ def checkTwo(line, lineX):
                 if boolX:
                     # lineX = ''
                     ErrorFlagPass2 = True
-                    ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + bin(programCounterP2)[2:])
+                    ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + convertbin(str(bin(programCounterP2)[2:])),1)
             else:
                 
                 try:
-                    lineX += bin(programCounterP2)[2:]+" "     # convert pc2 to binary
-                    lineX += bin(opCode_Table[line[0]])[2:] + " "   # convet oppcode to binary
+                    lineX += convertbin(str(bin(programCounterP2)[2:]), 1) + " "     # convert pc2 to binary
+                    lineX += convertbin(str(bin(opCode_Table[line[0]])[2:]), 2) + " "   # convet oppcode to binary
                     if RepresentsInt(line[1]):
-                        lineX += bin(int(line[1]))[2:]
+                        lineX += convertbin(str(bin(int(line[1]))[2:]), 1)
                     else:   
                         for symbol in symbol_Table:
                             if symbol['name'] == line[1]:         # check for the symbol and if true
-                                lineX += bin(symbol['variableAddress'])[2:]  # add the binary of variableAdd to lineX
+                                lineX += convertbin(str(bin(symbol['variableAddress'])[2:]),1)  # add the binary of variableAdd to lineX
                                 foundSymbol = True
                         if foundSymbol == False:
                             lineX = ''
@@ -180,7 +200,7 @@ def checkTwo(line, lineX):
                 except KeyError:
                     lineX = ''
                     ErrorFlagPass2 = True
-                    ErrorListPass2.append("Invalid Opcode at: " + bin(programCounterP2)[2:])
+                    ErrorListPass2.append("Invalid Opcode at: " + convertbin(str(bin(programCounterP2)[2:])),1)
 
         return lineX
 
@@ -194,7 +214,7 @@ def passTwo():
             boolX, lineX = checkSTP_CLA(line, lineX)
             if boolX:
                 ErrorFlagPass2 = True
-                ErrorListPass2.append("Invalid OpCode in at: " + bin(programCounterP2))[2:]
+                ErrorListPass2.append("Invalid OpCode in at: " + convertbin(str(bin(programCounterP2))[2:]),1)
         elif len(line) == 2:
             lineX = checkTwo(line, lineX)
 
@@ -206,7 +226,7 @@ def passTwo():
                 lineX = ''
             else:
                 ErrorFlagPass2 = True
-                ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + bin(programCounterP2))[2:]
+                ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + convertbin(str(bin(programCounterP2))[2:]),1)
         finalOutput.append(lineX)
         programCounterP2 += 1
         # lineX = ''
