@@ -2,7 +2,7 @@
 CLA // CLear Accumulator
 INP 158
 INP B //B
-LAC 255
+LAC 256
 SUB B
 BRN L2
 DSP A
