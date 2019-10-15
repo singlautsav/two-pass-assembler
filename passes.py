@@ -153,7 +153,7 @@ programCounterP2 = 0
 ErrorFlagPass2 = False
 ErrorListPass2 = []
 
-finalOutput = []            # list to display the final output
+finalOutput = []                                        # list to display the final output
 
 
 def checkSTP_CLA(line, lineY):
@@ -162,16 +162,16 @@ def checkSTP_CLA(line, lineY):
             lineY += bin(opCode_Table['CLA'])[2:]       # convert opCode_Table 'CLA' into binary as machine code conatins the oppcode
             return False, lineY
         elif line[0] == 'STP':
-            lineY += bin(programCounterP2)[2:] + " "  # convert programCounter to binary and add to the line
-            lineY += bin(opCode_Table['STP'])[2:]    # convert opCode_Table 'CLA' into binary as machine code conatins the oppcode
+            lineY += bin(programCounterP2)[2:] + " "    # convert programCounter to binary and add to the line
+            lineY += bin(opCode_Table['STP'])[2:]       # convert opCode_Table 'CLA' into binary as machine code conatins the oppcode
             return False, lineY
         return True, lineY
     
 def checkTwo(line, lineX):
-        if line[0] == 'CLA' or line[0] == 'STP':    # check whether CLA and STP are present else error
+        if line[0] == 'CLA' or line[0] == 'STP':        # check whether CLA and STP are present else error
             lineX = ''
             ErrorFlagPass2 = True
-            ErrorListPass2.append("Inavalid opCode with extra Argument at: " + bin(programCounterP2)[2:])
+            ErrorListPass2.append("Inavalid opCode with extra Argument at: " + bin(programCounterP2)[2:]) #In case of Extra Arguement Throw Error
         else:
             if line[0][-1] == ':':
                 # print("checking this")
@@ -184,18 +184,18 @@ def checkTwo(line, lineX):
             else:
                 
                 try:
-                    lineX += bin(programCounterP2)[2:]+" "     # convert pc2 to binary
+                    lineX += bin(programCounterP2)[2:]+" "          # convert program Counter to binary
                     lineX += bin(opCode_Table[line[0]])[2:] + " "   # convet oppcode to binary
                     if RepresentsInt(line[1]):
                         lineX += bin(int(line[1]))[2:]
                     else:   
                         for symbol in symbol_Table:
-                            if symbol['name'] == line[1]:         # check for the symbol and if true
-                                lineX += bin(symbol['variableAddress'])[2:]  # add the binary of variableAdd to lineX
+                            if symbol['name'] == line[1]:                       # check for the symbol and if true
+                                lineX += bin(symbol['variableAddress'])[2:]     # add the binary of variableAdd to lineX
                                 foundSymbol = True
                         if foundSymbol == False:
                             lineX = ''
-                            ErrorFlagPass2 = True           # else error as symbol couldn't be found
+                            ErrorFlagPass2 = True                               # else error as symbol couldn't be found
                             ErrorListPass2.append("Could not Find Symbol in the Table:" + line[1])
                 except KeyError:
                     lineX = ''

@@ -1,6 +1,5 @@
 # two-pass-assembler
 
-=
 ## Working?
 To run the program. 
 * Clone the Repository
