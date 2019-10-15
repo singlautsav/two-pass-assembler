@@ -20,6 +20,7 @@ Since we were to handle the variables, following errors are handled by the progr
 * Excessive arguments
 * Lesser Number of Arguements for said Opcodes
 * STOP Command Not Found Error
+* Address Defined more than 256 Bits
 
 ## Files and There Use Case
 
