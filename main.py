@@ -11,7 +11,7 @@ text = text.split('\n')                    # split them
 # text = text.split('\t')
 
 
-print(text)                               # print them
+# print(text)                               # print them
 
 if passOne(text) == 0:
     ErrorFlag = True                    # if there is an error in pass one pass then there is an error

@@ -1,6 +1,7 @@
-CLA
-INP A
-INP B
+// Lets Start The Game
+CLA // CLA
+INP A // Take Input
+INP B // B
 LAC A
 SUB B
 BRN L2
@@ -10,6 +11,9 @@ BRZ L1
 L1: DSP B
 CLA
 BRZ L2
+<<<<<<< HEAD
 A DW 2
 B DW 3
+=======
+>>>>>>> 89e41bdadff64dc4f2133c4d7f4750b4dc5bc626
 L2: STP
