@@ -32,7 +32,7 @@ else:
             elif variableAddress_counter >= 1:
                 ErrorFlag = True
                 ErrorList.append('error - more than one symbol with variableAddress missing')
-f_symboltable = open('Symboltable', 'w')
+f_symboltable = open('Symboltable.txt', 'w')
 print(symbol_Table)                             # print symbol table and write them in file
 for i in symbol_Table:
     f_symboltable.write(i['name'] + " " + str(i['variableAddress']) + '\n')

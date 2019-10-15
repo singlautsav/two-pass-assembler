@@ -1,6 +1,6 @@
 // Lets Start The Game
 CLA // CLA
-INP A // Take Input
+INP 158 // Take Input
 INP B // B
 LAC A
 SUB B

@@ -136,6 +136,13 @@ def passOne(text):
             i['isFound']=True
             i['variableAddress']=programCounterX
             programCounterX+=1
+        
+    for i in symbol_Table:
+        try:
+            z = int(i['name'])
+            i['variableAddress'] = z
+        except ValueError:
+            pass
 
 
     return STP_found
