@@ -25,9 +25,12 @@ Since we were to handle the variables, following errors are handled by the progr
 
 * Output.txt
 On successful completion of assembly the Output.txt will have the Machine code for the said Assembly code.
-* Symboltable
+* Symboltable.txt
 On Successful completion of pass one the Symbol Table will be filled with label name and address
 * test.txt
 It is the file that contains the assembly code to be tested
 * Errorfile.txt
 In case of Errors during Pass-One or Pass-Two the Error file will be flooded with the error message and where ever defined the address of the file.
+* passes.py
+Every method that has to be used for pass-one or pass-two has been coded in that given file 
+
