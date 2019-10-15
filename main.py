@@ -32,6 +32,12 @@ else:
             elif variableAddress_counter >= 1:
                 ErrorFlag = True
                 ErrorList.append('error - more than one symbol with variableAddress missing')
+
+        if i['variableAddress']>=256:
+            ErrorFlag = True
+            ErrorList.append("Address more than 256 bits")
+
+
 f_symboltable = open('Symboltable.txt', 'w')
 print(symbol_Table)                             # print symbol table and write them in file
 for i in symbol_Table:
@@ -44,6 +50,10 @@ if ErrorFlag:
     for err in ErrorList:                       # here we are printing all the error and write and close the file
         print(err)
         f_error.write(err + '\n')
+    
+    for err in ErrorListPass2:
+        print(err)
+        f_error.write(err +'\n')
 else:
     passTwo()
     for i in finalOutput:                       # else print the final output

@@ -143,6 +143,7 @@ def passOne(text):
             i['variableAddress'] = z
         except ValueError:
             pass
+        
 
 
     return STP_found
@@ -241,7 +242,7 @@ def passTwo():
             boolX, lineX = checkSTP_CLA(line, lineX)
             if boolX:
                 ErrorFlagPass2 = True
-                ErrorListPass2.append("Invalid OpCode in at: " + convertbin(str(bin(programCounterP2))[2:]),1)
+                ErrorListPass2.append("Invalid OpCode in at: " + convertbin(str(bin(programCounterP2))[2:],1))
         elif len(line) == 2:
             lineX = checkTwo(line, lineX)
 
@@ -253,7 +254,7 @@ def passTwo():
                 lineX = ''
             else:
                 ErrorFlagPass2 = True
-                ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + convertbin(str(bin(programCounterP2))[2:]),1)
+                ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + convertbin(str(bin(programCounterP2))[2:],1))
         finalOutput.append(lineX)
         programCounterP2 += 1
         # lineX = ''

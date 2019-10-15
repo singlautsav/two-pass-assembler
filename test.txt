@@ -1,9 +1,8 @@
 // Lets Start The Game
 CLA // CLA
-INP 158 
-// Take Input
+INP 158 // Take Input
 INP B //B
-LAC 157
+LAC 250
 SUB B
 BRN L2
 DSP A
