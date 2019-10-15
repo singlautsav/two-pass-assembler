@@ -10,7 +10,7 @@ python main.py
 * Input file Address when asked for
 
 ## File type
-The program can work with the text file. With all the opcodes defined in the document. 
+The program can work with the text file.
 
 ## Errors Taken Care of?
 
