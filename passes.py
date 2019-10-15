@@ -17,7 +17,7 @@ def lineCheck(line):
 def passOne(text):
     global programCounterX
     STP_found = 0                  # flag to check STP is present in the code
-    
+    # print("PASS 1")
     for i in text:
         if i == '':
             text.remove(i)
@@ -40,7 +40,7 @@ def passOne(text):
                 if line[i] == '':
                     # print("here")
                     line.remove(i)
-                if line[i] =='//':
+                if line[i].startswith('//'):
                     line = line[:i]
                     break
 
@@ -128,6 +128,10 @@ def passOne(text):
                     ErrorList.append("Invalid Command in Line:" + str(programCounterX))
                     # print("Er)
 
+            else:
+                ErrorFlag = True
+                ErrorList.append("Extra/ Invalid Arguements at " + str(programCounterX))
+
             # print(symbol_Table)
             programCounterX += 1
 
@@ -143,7 +147,6 @@ def passOne(text):
             i['variableAddress'] = z
         except ValueError:
             pass
-        
 
 
     return STP_found
@@ -196,57 +199,64 @@ def convertbin(line,value):
         return line
 
 def checkTwo(line, lineX):
-        if line[0] == 'CLA' or line[0] == 'STP':        # check whether CLA and STP are present else error
-            lineX = ''
-            ErrorFlagPass2 = True
-            ErrorListPass2.append("Inavalid opCode with extra Argument at: " + convertbin(str(bin(programCounterP2)[2:])),1)
+    global ErrorFlagPass2
+    if line[0] == 'CLA' or line[0] == 'STP':        # check whether CLA and STP are present else error
+        lineX = ''
+        ErrorFlagPass2 = True
+        ErrorListPass2.append("Inavalid opCode with extra Argument at: " + convertbin(str(bin(programCounterP2)[2:]),1))
+    else:
+        if line[0][-1] == ':':
+            # print("checking this")
+            boolX, lineX = checkSTP_CLA(line[1:], lineX)
+            # print(lineX, boolX)
+            if boolX:
+                # lineX = ''
+                # print("error")
+                ErrorFlagPass2 = True
+                ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + convertbin(str(bin(programCounterP2)[2:]),1))
         else:
-            if line[0][-1] == ':':
-                # print("checking this")
-                boolX, lineX = checkSTP_CLA(line[1:], lineX)
-                # print(lineX)
-                if boolX:
-                    # lineX = ''
-                    ErrorFlagPass2 = True
-                    ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + convertbin(str(bin(programCounterP2)[2:])),1)
-            else:
-                
-                try:
-                    lineX += convertbin(str(bin(programCounterP2)[2:]), 1) + " "     # convert pc2 to binary
-                    lineX += convertbin(str(bin(opCode_Table[line[0]])[2:]), 2) + " "   # convet oppcode to binary
-                    if RepresentsInt(line[1]):
-                        lineX += convertbin(str(bin(int(line[1]))[2:]), 1)
-                    else:   
-                        for symbol in symbol_Table:
-                            if symbol['name'] == line[1]:         # check for the symbol and if true
-                                lineX += convertbin(str(bin(symbol['variableAddress'])[2:]),1)  # add the binary of variableAdd to lineX
-                                foundSymbol = True
-                        if foundSymbol == False:
-                            lineX = ''
-                            ErrorFlagPass2 = True                               # else error as symbol couldn't be found
-                            ErrorListPass2.append("Could not Find Symbol in the Table:" + line[1])
-                except KeyError:
-                    lineX = ''
-                    ErrorFlagPass2 = True
-                    ErrorListPass2.append("Invalid Opcode at: " + convertbin(str(bin(programCounterP2)[2:])),1)
+            
+            try:
+                lineX += convertbin(str(bin(programCounterP2)[2:]), 1) + " "     # convert pc2 to binary
+                lineX += convertbin(str(bin(opCode_Table[line[0]])[2:]), 2) + " "   # convet oppcode to binary
+                if RepresentsInt(line[1]):
+                    lineX += convertbin(str(bin(int(line[1]))[2:]), 1)
+                else:   
+                    for symbol in symbol_Table:
+                        if symbol['name'] == line[1]:         # check for the symbol and if true
+                            lineX += convertbin(str(bin(symbol['variableAddress'])[2:]),1)  # add the binary of variableAdd to lineX
+                            foundSymbol = True
+                    if foundSymbol == False:
+                        lineX = ''
+                        ErrorFlagPass2 = True                               # else error as symbol couldn't be found
+                        ErrorListPass2.append("Could not Find Symbol in the Table:" + line[1])
+            except KeyError:
+                lineX = ''
+                ErrorFlagPass2 = True
+                ErrorListPass2.append("Invalid Opcode at: " + convertbin(str(bin(programCounterP2)[2:])),1)
 
-        return lineX
+    return lineX
 
 
 def passTwo():
     global programCounterP2
+    global ErrorFlagPass2
     for line in lines:
+        # print(line)
         lineX = ''
         foundSymbol = False
         if len(line) == 1:       # for len = 1 checkX - if true - error
+            # print("here is len 1")
             boolX, lineX = checkSTP_CLA(line, lineX)
             if boolX:
                 ErrorFlagPass2 = True
                 ErrorListPass2.append("Invalid OpCode in at: " + convertbin(str(bin(programCounterP2))[2:],1))
         elif len(line) == 2:
+            # print("Here is len 2")
             lineX = checkTwo(line, lineX)
 
         elif len(line) == 3:
+            # print("Here is len 3")
             if line[0][-1] == ':':
                 # print("here")
                 lineX = checkTwo(line[1:], lineX)
@@ -255,8 +265,12 @@ def passTwo():
             else:
                 ErrorFlagPass2 = True
                 ErrorListPass2.append("Invalid Opcode or Extra Arguements at:" + convertbin(str(bin(programCounterP2))[2:],1))
+        else:
+            ErrorFlagPass2 = True
+            ErrorListPass2.append("More than Required Arguements")
         finalOutput.append(lineX)
         programCounterP2 += 1
         # lineX = ''
+    
 
 

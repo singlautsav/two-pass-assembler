@@ -43,7 +43,7 @@ print(symbol_Table)                             # print symbol table and write t
 for i in symbol_Table:
     f_symboltable.write(i['name'] + " " + str(i['variableAddress']) + '\n')
 f_symboltable.close()
-print(lines)
+# print(lines)
 f_output = open("Output.txt", 'w')
 f_error = open('Errorfile.txt', 'w')
 if ErrorFlag:
@@ -51,14 +51,17 @@ if ErrorFlag:
         print(err)
         f_error.write(err + '\n')
     
-    for err in ErrorListPass2:
-        print(err)
-        f_error.write(err +'\n')
 else:
     passTwo()
-    for i in finalOutput:                       # else print the final output
-        if i != "":
-            print(i)
-            f_output.write(i+'\n')
+    # print(ErrorFlagPass2)
+    if len(ErrorListPass2)>0:
+        for err in ErrorListPass2:
+            print(err)
+            f_error.write(err +'\n')
+    else:
+        for i in finalOutput:                       # else print the final output
+            if i != "":
+                print(i)
+                f_output.write(i+'\n')
 f_error.close()
 f_output.close()

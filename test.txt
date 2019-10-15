@@ -1,8 +1,8 @@
-// Lets Start The Game
-CLA // CLA
-INP 158 // Take Input
+//Code Starts Here
+CLA // CLear Accumulator
+INP 158
 INP B //B
-LAC 250
+LAC 255
 SUB B
 BRN L2
 DSP A
